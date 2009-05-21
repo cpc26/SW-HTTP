@@ -1,0 +1,24 @@
+SW-HTTP
+=======
+
+For now this works as the only "real" example of usage:
+
+  http://common-lisp.net/~lnostdal/programming/lisp/symbolicweb/src/server-sw-http.lisp
+
+
+You basically:
+
+  * Sub-class SERVER and set the APPLICATION-FINDER-FN slot to a callback that
+    generates your content.
+  
+  * Creates an instance of your server subclass;
+
+      (defparameter *server* (make-instance 'my-server :port 5002))
+
+      
+  * Start listening:
+
+      (start-listening *server*)
+     
+
+  * Then point your browser to http://localhost:5002/
