@@ -1,24 +1,26 @@
-SW-HTTP
-=======
+SW-HTTP - an EPOLL based server for Common Lisp
+===============================================
 
-For now this works as the only "real" example of usage:
+  SW-HTTP is an EPOLL(7) based HTTP server for Common Lisp tailored for
+AJAX/Comet type tasks. It is designed to run in collaboration with a reverse
+proxy (mod_proxy) like lighttpd or nginx.
 
-  http://common-lisp.net/~lnostdal/programming/lisp/symbolicweb/src/server-sw-http.lisp
+  SW-HTTP has been tested with 20 000 concurrent clients on a Linux-2.6.18 box.
 
 
-You basically:
+  You basically:
 
-  * Sub-class SERVER and set the APPLICATION-FINDER-FN slot to a callback that
-    generates your content.
+    * Sub-class SERVER and set the APPLICATION-FINDER-FN slot to a callback that
+      generates your content.
   
-  * Creates an instance of your server subclass;
+    * Creates an instance of your server subclass;
 
-      (defparameter *server* (make-instance 'my-server :port 5002))
+        (defparameter *server* (make-instance 'my-server :port 5002))
 
       
-  * Start listening:
+    * Start listening:
 
-      (start-listening *server*)
+        (start-listening *server*)
      
 
-  * Then point your browser to http://localhost:5002/
+    * Then point your browser to http://localhost:5002/
