@@ -24,3 +24,10 @@ proxy (mod_proxy) like lighttpd or nginx.
      
 
     * Then point your browser to http://localhost:5002/
+
+
+
+Status
+======
+
+Beta.
