@@ -5,7 +5,7 @@
   :long-description "Tusen på tusen av nydelige løpenoter og hvilenoter"
   :author "Lars Rune Nøstdal <larsnostdal@gmail.com>"
   :version "v0.1"
-  :license "Same license as Symbolicweb ( http://groups.google.com/group/symbolicweb )."
+  :license "AGPLv3"
 
   :depends-on (:iolib
                :alexandria
@@ -31,4 +31,3 @@
      (:file "mime-types")
      (:file "user-api")
      ))))
-
