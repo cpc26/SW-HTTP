@@ -54,9 +54,7 @@
            (connection-extract-next-request connection))
       (progn
         (bt:release-lock (cn-mutex connection))
-        (server-find-application (cn-server connection)
-                                 connection
-                                 #'connection-done-generating-response))
+        (server-find-application (cn-server connection) connection))
       (bt:release-lock (cn-mutex connection))))
 
 

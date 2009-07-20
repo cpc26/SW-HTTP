@@ -35,11 +35,11 @@
 
 
 (maybe-inline server-find-application)
-(defun server-find-application (server connection callback)
+(defun server-find-application (server connection)
   (declare (server server)
            (type connection connection)
            #.optimizations)
-  (funcall (the function (application-finder-fn-of server)) server connection callback))
+  (funcall (the function (application-finder-fn-of server)) server connection))
 
 
 (maybe-inline server-add-connection)
