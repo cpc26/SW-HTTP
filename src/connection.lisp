@@ -5,7 +5,7 @@
 
 (defstruct (connection (:conc-name :cn-) (:copier nil))
   (mutex (bt:make-lock) :type sb-thread:mutex)
-  
+
   (socket (error ":SOCKET is needed.") :type iolib.sockets:socket)
   (server (error ":SERVER is needed.") :type server)
 
@@ -16,7 +16,7 @@
   (sending-p nil :type symbol)
 
   (response (make-response) :type response)
-  
+
   (close-p nil :type symbol))
 
 
@@ -62,7 +62,7 @@
 (defun connection-done-generating-response (connection)
   (declare (connection connection)
            #.optimizations)
-  (with-sw-handlers 
+  (with-sw-handlers
     (if (socket-connected-p (cn-socket connection))
         (bt:with-lock-held ((cn-mutex connection))
           (setf (cn-current-request connection) nil)
@@ -85,7 +85,7 @@
            #.optimizations)
   (connection-add-request-to-queue connection request)
   (connection-handle-request-queue connection))
-  
+
 
 (maybe-inline connection-start-sending)
 (defun connection-start-sending (connection)
@@ -139,7 +139,7 @@
           (case event
             (:read (when-let (request (request-handle connection))
                      (connection-done-reading-request connection request)))
-            
+
             (:write (when (response-handle connection)
                       ;; Lighttpd 1.4.x's mod_proxy does HTTP/1.0 and needs for the connection to close. :(
                       ;; 1.5.x does not require this though.

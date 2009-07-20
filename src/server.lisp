@@ -10,12 +10,12 @@
    (default-mime-type :accessor default-mime-type-of
                       :initarg :default-mime-type
                       :initform "text/plain")
-   
+
    (port :reader port-of :initarg :port
          :initform (error ":PORT needed."))
-   
+
    (socket :reader socket-of)
-   
+
    (application-finder-fn :accessor application-finder-fn-of :initarg :application-finder-fn
                           :initform  (progn
                                        (warn ":APPLICATION-FINDER-FN not supplied; will always return DUMMY-APPLICATION.")
@@ -76,7 +76,7 @@
   (unless (running-p-of server)
     (with-slots (socket running-p) server
       (setf socket (make-socket :local-host +any-host+
-                                :connect :passive 
+                                :connect :passive
                                 :type :stream
                                 :address-family :ipv4
                                 :reuse-address t
