@@ -6,6 +6,9 @@
 (pushnew :sw-http *features*) ;; Tell the world we exist.
 
 
+(setf iolib.sockets:*ipv6* nil) ;; Use IPV4 only.
+
+
 (define-constant +inline-functions-p+ nil)
 
 
