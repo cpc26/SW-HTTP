@@ -60,7 +60,7 @@
   (declare #.optimizations
            (string name)
            (list cookies))
-  (locally (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
+  (muffle-compiler-note
     (cdr (assoc name cookies :test #'string=))))
 
 
@@ -171,7 +171,7 @@ Returns NIL if no header with HEADER-KEY was found."
                  (symbol (string header-key)))
                (rq-header-fields (request connection))))
 
-   
+
 (maybe-inline host)
 (defun host (&optional (connection *connection*))
   "HTTP \"Host\" header-field.
@@ -251,12 +251,14 @@ The user should parse the result of the \"user-agent\" header himself then."
         nil)))
 
 
+(maybe-inline close-connection-p)
 (defun close-connection-p (&optional (connection *connection*))
   (declare (connection connection)
            #.optimizations)
   (cn-close-p connection))
 
 
+(maybe-inline (setf close-connection-p))
 (defun (setf close-connection-p) (pred &optional (connection *connection*))
   "If PRED is given a T value the server will close the connection/socket to
 the client when it is done sending the respons. Some proxies require for the
@@ -266,6 +268,7 @@ back-end servers to do this."
   (setf (cn-close-p connection) pred))
 
 
+(maybe-inline response-add-chunk)
 (defun response-add-chunk (chunk &optional (response (cn-response *connection*)))
   (queue-push (rs-chunks response) chunk))
 (export 'response-add-chunk)

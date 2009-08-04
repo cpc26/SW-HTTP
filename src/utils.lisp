@@ -3,7 +3,6 @@
 (in-package #:sw-http)
 
 
-(define-constant +crlf+ (format nil "~C~C" #\Return #\Newline) :test #'string-equal)
 (define-constant +crlf-octets+ (sb-ext:string-to-octets +crlf+) :test #'equalp)
 
 (define-constant +http-blank-line+ (concatenate 'string +crlf+ +crlf+) :test #'string-equal)
@@ -114,7 +113,7 @@ Returns NIL when code starts blocking."
 
 
 
-  
+
 
 
 ;;; Based on something from pkhuong on #lisp ( here: http://paste.lisp.org/display/67320 )

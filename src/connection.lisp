@@ -13,11 +13,11 @@
 
   (incoming-request-queue (mk-queue) :type queue)
   (current-request nil) ;;:type (or nil request))
-  (sending-p nil :type symbol)
+  (sending-p nil :type (member t nil))
 
   (response (make-response) :type response)
 
-  (close-p nil :type symbol))
+  (close-p nil :type (member t nil)))
 
 
 (maybe-inline cn-outgoing-response-busy-p)

@@ -29,9 +29,7 @@
   (declare #.optimizations
            (string message-body))
   (sb-ext:string-to-octets (format nil "Content-Length: ~D~A~A~A"
-                                   (length message-body)
-                                   +crlf+
-                                   +crlf+
+                                   (length message-body) +crlf+ +crlf+
                                    message-body)
                            :external-format :utf-8))
 (export 'mk-response-message-body)
@@ -56,4 +54,3 @@ Returns NIL if there is more to send."
                 (setf (rs-chunk-buffer-pos response) 0)
                 (queue-pop chunks))
           :finally (return-from response-handle t)))))
-
