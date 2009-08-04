@@ -28,7 +28,8 @@
          `(dolist (post-parameter *post-parameters*)
             (setf (cdr post-parameter)
                   (url-decode (cdr post-parameter)))))
-       ,@body)))
+       (with-sw-handlers
+         ,@body))))
 
 
 ;; TODO: This needs more work; the :EXPIRE keyarg in particular.
