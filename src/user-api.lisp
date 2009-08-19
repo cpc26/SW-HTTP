@@ -245,7 +245,7 @@ The user should parse the result of the \"user-agent\" header himself then."
   (let ((user-agent (the string (get-header "user-agent" connection))))
     (or (when (search "KHTML" user-agent) :khtml)
         (when (search "Gecko" user-agent) :gecko)
-        (when (search "MSIE" user-agent) :msio)
+        (when (search "MSIE" user-agent) :msie)
         (when (or (search "Presto" user-agent)
                   (search "Opera" user-agent)) :presto)
         nil)))
