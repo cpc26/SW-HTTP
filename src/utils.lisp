@@ -107,7 +107,7 @@ Returns NIL when code starts blocking."
 (defun %get-header (key request-header-fields)
   (declare (string key)
            (list request-header-fields)
-           (optimize speed))
+           #.optimizations)
   (cdr (assoc key request-header-fields :test #'string=)))
 
 

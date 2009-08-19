@@ -71,16 +71,20 @@ or position of blank line if a +BLANK-LINE-OCTETS+ sequence has been found."
       (let* ((incoming-request (cn-incoming-request connection))
              (complete-request (irq-complete-request incoming-request)))
         ;; TODO: This split thingy isn't correct, but let's see if we can get away with it anyway.
-        (let ((request-lines (cl-ppcre:split +crlf+
-                                             (octets-to-simple-base-string (irq-buffer incoming-request)
-                                                                           :end (the fixnum (+ blank-line-pos (length +crlf+))))
-                                             :sharedp t)))
+        (let ((request-lines
+               (cl-ppcre:split +crlf+
+                               (octets-to-simple-base-string (irq-buffer incoming-request)
+                                                             :end  (truly-the fixnum (+ blank-line-pos
+                                                                                        (length +crlf+))))
+                               :sharedp t)))
           (declare (dynamic-extent request-lines))
           (request-parse-initial-line (first request-lines) complete-request)
           (request-parse-header-fields (rest request-lines) complete-request)
-          (incoming-request-move-tail-of-buffer-to-beginning incoming-request
-                                                             (the fixnum (+ blank-line-pos (length +http-blank-line-octets+)))
-                                                             (fill-pointer (irq-buffer incoming-request)))
+          (incoming-request-move-tail-of-buffer-to-beginning
+           incoming-request
+           (truly-the fixnum (+ blank-line-pos
+                                (length +http-blank-line-octets+)))
+           (fill-pointer (irq-buffer incoming-request)))
           complete-request)))))
 
 
@@ -111,7 +115,8 @@ or position of blank line if a +BLANK-LINE-OCTETS+ sequence has been found."
            #.optimizations)
   (let* ((incoming-request (cn-incoming-request connection))
          (complete-request (irq-complete-request incoming-request))
-         (content-length (irq-last-pos-of-buffer incoming-request)) ;; See the `NOTE' in INCOMING-REQUEST-PREPARE-TO-READ-MESSAGE-BODY.
+         ;; See the `NOTE' in INCOMING-REQUEST-PREPARE-TO-READ-MESSAGE-BODY.
+         (content-length (irq-last-pos-of-buffer incoming-request))
          (buffer (irq-buffer incoming-request)))
     (read-until-eagain buffer connection)
     (let ((remaining (- content-length (fill-pointer buffer))))
@@ -120,8 +125,8 @@ or position of blank line if a +BLANK-LINE-OCTETS+ sequence has been found."
             (setf (rq-message-body complete-request) (octets-to-simple-base-string buffer))
             (incoming-request-move-tail-of-buffer-to-beginning (cn-incoming-request connection)
                                                                content-length
-                                                               (the fixnum (+ (fill-pointer buffer)
-                                                                              (abs remaining))))
+                                                               (truly-the fixnum (+ (fill-pointer buffer)
+                                                                                    (abs remaining))))
             complete-request)
           nil))))
 
