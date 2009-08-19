@@ -43,10 +43,15 @@ Returns NIL if there is more to send."
     (loop-until-eagain
        (loop :for chunk = (queue-peek chunks)
           :while chunk
-          :do (when (zerop (- (the fixnum (length chunk))
-                              (the fixnum (incf (rs-chunk-buffer-pos response)
-                                                (the fixnum (send-to socket chunk
-                                                                     :start (rs-chunk-buffer-pos response)))))))
+          ;; TODO: Alot of TRULY-THE's here; this is a bit unsafe.
+          :do (when (zerop (- (length (truly-the octets chunk))
+                              ;; TODO: Ugly. Should be replaced by a simple INCF, but INCF and/or SETF vs. a struct
+                              ;; slot doesn't handle types 100% atm.
+                              (with1 (truly-the fixnum (+ (rs-chunk-buffer-pos response)
+                                                          (truly-the fixnum (send-to socket chunk
+                                                                                     :start (rs-chunk-buffer-pos
+                                                                                             response)))))
+                                (setf (rs-chunk-buffer-pos response) it))))
                 (setf (rs-chunk-buffer-pos response) 0)
                 (queue-pop chunks))
           :finally (return-from response-handle t)))))

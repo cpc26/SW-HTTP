@@ -270,5 +270,6 @@ back-end servers to do this."
 
 (maybe-inline response-add-chunk)
 (defun response-add-chunk (chunk &optional (response (cn-response *connection*)))
+  (declare (octets chunk))
   (queue-push (rs-chunks response) chunk))
 (export 'response-add-chunk)
