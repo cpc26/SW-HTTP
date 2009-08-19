@@ -21,10 +21,9 @@
 
 
 (maybe-inline cn-outgoing-response-busy-p)
-(defun cn-outgoing-response-busy-p (connection)
+(defn cn-outgoing-response-busy-p (t ((connection connection)))
   "Anything currently writing or reading to/from OUTGOING-RESPONSE slot in CONNECTION?"
-  (declare (connection connection)
-           #.optimizations)
+  (declare #.optimizations)
   (or (cn-sending-p connection)
       (cn-current-request connection)))
 

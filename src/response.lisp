@@ -8,26 +8,23 @@
   (chunk-buffer-pos 0 :type fixnum))
 
 
-(defun mk-response-status-code (status-code)
-  (declare #.optimizations
-           (fixnum status-code))
-  (case status-code
+(defn mk-response-status-code (octets ((status-code fixnum)))
+  (declare #.optimizations)
+  (ecase status-code
     (200 #.(sb-ext:string-to-octets (catstr "HTTP/1.1 200 OK" +crlf+)))
     (404 #.(sb-ext:string-to-octets (catstr "HTTP/1.1 404 Not Found" +crlf+)))))
 (export 'mk-response-status-code)
 
 
-(defun mk-response-header-field (header-field)
-  (declare #.optimizations
-           (string header-field))
+(defn mk-response-header-field (octets ((header-field string)))
+  (declare #.optimizations)
   (sb-ext:string-to-octets (format nil "~A~A" header-field +crlf+)
                            :external-format :ascii))
 (export 'mk-response-header-field)
 
 
-(defun mk-response-message-body (message-body)
-  (declare #.optimizations
-           (string message-body))
+(defn mk-response-message-body (octets ((message-body string)))
+  (declare #.optimizations)
   (sb-ext:string-to-octets (format nil "Content-Length: ~D~A~A~A"
                                    (length message-body) +crlf+ +crlf+
                                    message-body)
@@ -36,11 +33,10 @@
 
 
 (maybe-inline response-handle)
-(defun response-handle (connection)
+(defn response-handle ((member nil t) ((connection connection)))
   "..or \"handle the response\".
 Returns NIL if there is more to send."
-  (declare (connection connection)
-           #.optimizations)
+  (declare #.optimizations)
   (let* ((response (cn-response connection))
          (chunks (rs-chunks response))
          (socket (cn-socket connection)))

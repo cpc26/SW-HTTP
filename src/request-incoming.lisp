@@ -7,35 +7,36 @@
   (complete-request (make-request) :type request)
 
   (buffer (make-array +request-buffer-size+ :element-type '(unsigned-byte 8) :fill-pointer 0)
-          :type (vector (unsigned-byte 8)))
+          :type (vector (unsigned-byte 8) #.+request-buffer-size+))
+
   (last-pos-of-buffer 0 :type fixnum)
   (status :handle-request-line-and-header-fields :type symbol))
 
 
 (maybe-inline incoming-request-reset)
-(defun incoming-request-reset (incoming-request)
-  (declare (incoming-request incoming-request)
-           #.optimizations)
+(defn incoming-request-reset (null ((incoming-request incoming-request)))
+  (declare #.optimizations)
   ;; We don't mess with the buffer here as it might contain data for the next request already.
   (setf (irq-status incoming-request) :handle-request-line-and-header-fields
-        (irq-complete-request incoming-request) (make-request)))
+        (irq-complete-request incoming-request) (make-request))
+  (values))
 
 
 (maybe-inline incoming-request-move-tail-of-buffer-to-beginning)
-(defun incoming-request-move-tail-of-buffer-to-beginning (incoming-request tail-start tail-end)
+(defn incoming-request-move-tail-of-buffer-to-beginning (null ((incoming-request incoming-request)
+                                                               (tail-start fixnum) (tail-end fixnum)))
   "Move any \"tail data\" to beginning of buffer and set the
 CURRENT-POS-OF-BUFFER and LAST-POS-OF-BUFFER slots to \"sane\" values ready for
 reading more data."
-  (declare (incoming-request incoming-request)
-           (fixnum tail-start tail-end)
-           #.optimizations)
+  (declare #.optimizations)
   (let ((buffer (irq-buffer incoming-request))
         (tail-size (- tail-end tail-start)))
     (when (plusp tail-size)
-      (locally (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
+      (muffle-compiler-note
         (replace buffer buffer :start2 tail-start :end2 tail-end)))
     (setf (fill-pointer buffer) tail-size
-          (irq-last-pos-of-buffer incoming-request) 0)))
+          (irq-last-pos-of-buffer incoming-request) 0))
+  (values))
 
 
 (maybe-inline incoming-request-read-until-blank-line)
@@ -48,10 +49,11 @@ or position of blank line if a +BLANK-LINE-OCTETS+ sequence has been found."
            (buffer (irq-buffer incoming-request)))
       (read-until-eagain buffer connection)
       ;; "Look back" as we go along.
-      (prog1 (locally (declare (sb-ext:muffle-conditions sb-ext:compiler-note)) ;; TODO: Got an "unused function (flet sb-c::oops ..)" here.
+      (prog1 (muffle-compiler-note
                (search +http-blank-line-octets+ buffer
                        ;; Backstep a bit, as we might have a split (IO-block) when we did the last search.
-                       :start2 (max 0 (- (irq-last-pos-of-buffer incoming-request) (length +http-blank-line-octets+)))
+                       :start2 (max 0 (- (irq-last-pos-of-buffer incoming-request)
+                                         (length +http-blank-line-octets+)))
                        :end2 (fill-pointer buffer)))
         (when (< +request-headers-max-size+
                  (the fixnum (setf (irq-last-pos-of-buffer incoming-request) (fill-pointer buffer))))
@@ -147,6 +149,5 @@ Returns NIL if there is more to read, or an instance of REQUEST if we have a com
        (when-let (request (incoming-request-handle-message-body connection))
          (incoming-request-reset incoming-request)
          request))
-      
-      (t (error "HANDLE-READ-REQUEST: Unknown status value ~A given." (irq-status incoming-request))))))
 
+      (t (error "HANDLE-READ-REQUEST: Unknown status value ~A given." (irq-status incoming-request))))))
