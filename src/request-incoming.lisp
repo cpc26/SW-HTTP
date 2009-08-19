@@ -132,7 +132,7 @@ Returns NIL if there is more to read, or an instance of REQUEST if we have a com
   (declare (connection connection)
            #.optimizations)
   (let ((incoming-request (cn-incoming-request connection)))
-    (case (irq-status incoming-request)
+    (ecase (irq-status incoming-request)
       (:handle-request-line-and-header-fields
        (when-let (request (incoming-request-handle-line-and-header-fields connection))
          (if (eq :post (rq-method request))
@@ -148,6 +148,4 @@ Returns NIL if there is more to read, or an instance of REQUEST if we have a com
       (:handle-request-message-body
        (when-let (request (incoming-request-handle-message-body connection))
          (incoming-request-reset incoming-request)
-         request))
-
-      (t (error "HANDLE-READ-REQUEST: Unknown status value ~A given." (irq-status incoming-request))))))
+         request)))))

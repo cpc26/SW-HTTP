@@ -135,7 +135,7 @@
   (let ((*connection* connection))
     (unwind-protect-case ()
         (with-sw-handlers
-          (case event
+          (ecase event
             (:read (when-let (request (request-handle connection))
                      (connection-done-reading-request connection request)))
 
