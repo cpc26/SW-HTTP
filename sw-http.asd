@@ -28,6 +28,6 @@
      (:file "request")
      (:file "request-incoming")
      (:file "response")
-     (:file "mime-types")
+     #|(:file "mime-types")|#
      (:file "user-api")
      ))))
