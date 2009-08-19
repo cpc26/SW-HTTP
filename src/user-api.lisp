@@ -229,7 +229,7 @@ Given `nostdal.org' this returns NIL."
   (rq-url (request connection)))
 
 
-(maybe-inline done-generating-response)
+(declaim (inline done-generating-response))
 (defun done-generating-response (&optional (connection *connection*))
   (declare (connection connection)
            (inline connection-done-generating-response)

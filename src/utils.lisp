@@ -45,29 +45,32 @@ Returns NIL when code starts blocking."
 (maybe-inline read-until-eagain)
 (defun read-until-eagain (buffer connection)
   (declare ((vector (unsigned-byte 8)) buffer)
-           (type connection connection))
+           (type connection connection)
+           #.optimizations)
   (let ((request-buffer (request-buffer-of (cn-server connection))))
+    (declare ((simple-array (unsigned-byte 8) (#.+request-buffer-size+)) request-buffer))
     (loop-until-eagain
        (multiple-value-bind (%not-used num-bytes-read)
            (receive-from (cn-socket connection) :buffer request-buffer :end +request-buffer-size+)
-         (declare (type fixnum num-bytes-read)
+         (declare (fixnum num-bytes-read)
                   (ignore %not-used))
          (when (zerop num-bytes-read) ;; Peer closed connection.
            (invoke-restart 'continue-listening))
          (let* ((current-pos-of-buffer (fill-pointer buffer))
-                (new-pos-of-buffer (+ current-pos-of-buffer num-bytes-read)))
-           (declare (sb-ext:muffle-conditions sb-ext:compiler-note)) ;; Messages about BUFFER not being simple.
-           (if (minusp (- (the fixnum (array-total-size buffer)) new-pos-of-buffer))
+                (new-pos-of-buffer (truly-the fixnum (+ current-pos-of-buffer num-bytes-read))))
+           (if (minusp (- (array-total-size buffer) new-pos-of-buffer))
                ;; TODO: It might make sense adding som extra at the end here.
                (adjust-array buffer new-pos-of-buffer :fill-pointer new-pos-of-buffer)
                (setf (fill-pointer buffer) new-pos-of-buffer))
-           (replace buffer request-buffer :start1 current-pos-of-buffer :end2 num-bytes-read))))))
+           (muffle-compiler-note
+             (replace buffer request-buffer :start1 current-pos-of-buffer :end2 num-bytes-read)))))))
 
 
 (maybe-inline parse-query-str)
 (defun parse-query-str (query-str &optional (start 0))
   (declare (base-string query-str)
            (fixnum start)
+           (values list &optional)
            #.optimizations)
   (let ((key_values (cl-ppcre:split #\& query-str :sharedp t :start start)))
     (declare (dynamic-extent key_values))
@@ -87,7 +90,7 @@ Returns NIL when code starts blocking."
   (let ((str (make-string end :element-type 'base-char)))
     (loop :for i fixnum :below end
        :do (setf (schar str i) (code-char
-                                (locally (declare (sb-ext:muffle-conditions sb-ext:compiler-note))
+                                (muffle-compiler-note
                                   (aref octets i)))))
     str))
 

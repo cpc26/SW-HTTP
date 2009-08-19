@@ -8,6 +8,7 @@
   (chunk-buffer-pos 0 :type fixnum))
 
 
+(declaim (inline mk-response-status-code))
 (defn mk-response-status-code (octets ((status-code fixnum)))
   (declare #.optimizations)
   (ecase status-code
@@ -16,6 +17,7 @@
 (export 'mk-response-status-code)
 
 
+(declaim (inline mk-response-header-field))
 (defn mk-response-header-field (octets ((header-field string)))
   (declare #.optimizations)
   (sb-ext:string-to-octets (format nil "~A~A" header-field +crlf+)
@@ -23,6 +25,7 @@
 (export 'mk-response-header-field)
 
 
+(declaim (inline mk-response-message-body))
 (defn mk-response-message-body (octets ((message-body string)))
   (declare #.optimizations)
   (sb-ext:string-to-octets (format nil "Content-Length: ~D~A~A~A"

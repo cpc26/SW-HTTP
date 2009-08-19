@@ -7,3 +7,5 @@ problems" start showing up.
 handle this, actually.
 
 
+  Consider creating a WITH-OUTPUT-TO-BUFFER thing, for octets instead of
+characters. I can switch from W-O-T-S to octets in SW then.

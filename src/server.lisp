@@ -5,6 +5,7 @@
 
 (defclass server (event-base)
   ((running-p :reader running-p-of
+              :type (member t nil)
               :initform nil)
 
    (default-mime-type :accessor default-mime-type-of
@@ -12,6 +13,7 @@
                       :initform "text/plain")
 
    (port :reader port-of :initarg :port
+         :type fixnum
          :initform (error ":PORT needed."))
 
    (socket :reader socket-of)
@@ -21,12 +23,15 @@
                                        (warn ":APPLICATION-FINDER-FN not supplied; will always return DUMMY-APPLICATION.")
                                        'dummy-application))
    (connections :reader connections-of
+                :type hash-table
                 :initform (make-hash-table))
 
    (request-buffer :reader request-buffer-of
+                   :type (simple-array (unsigned-byte 8) (#.+request-buffer-size+))
                    :initform (make-array +request-buffer-size+ :element-type '(unsigned-byte 8)))
 
-   (thread :reader thread-of)))
+   (thread :reader thread-of
+           :type sb-thread:thread)))
 (export '(server port-of socket-of application-finder-fn-of connections-of))
 
 
