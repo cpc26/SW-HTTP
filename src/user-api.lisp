@@ -44,7 +44,8 @@
                               "~@[; domain=~A~]"
                               "~@[; secure~*~]")
                 name value expire path domain secure-p)
-        (rs-header-fields response)))
+        (rs-header-fields response))
+  (values))
 
 
 (maybe-inline cookies)
@@ -214,7 +215,7 @@ Given `nostdal.org' this returns NIL."
 
 (maybe-inline http-version)
 (defun http-version (&optional (connection *connection*))
-  "Returns :HTTP-1.0 or :HTTP-1.1."
+  "Returns NIL (not known, yet), :HTTP-1.0 or :HTTP-1.1."
   (declare #.optimizations
            (connection connection))
   (rq-http-version (request connection)))

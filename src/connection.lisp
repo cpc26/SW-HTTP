@@ -12,7 +12,7 @@
   (incoming-request (make-incoming-request) :type incoming-request)
 
   (incoming-request-queue (mk-queue) :type queue)
-  (current-request nil) ;;:type (or nil request))
+  (current-request nil :type (or null request))
   (sending-p nil :type (member t nil))
 
   (response (make-response) :type response)
