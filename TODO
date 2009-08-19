@@ -1,0 +1,9 @@
+  See the TODO in INCOMING-REQUEST-HANDLE-LINE-AND-HEADER-FIELDS in
+request-incoming.lisp. This is probably a good place to start looking if "weird
+problems" start showing up.
+
+
+  Timeout wrt. a complete HTTP round-trip. Or, maybe not. I think Lighttpd can
+handle this, actually.
+
+
