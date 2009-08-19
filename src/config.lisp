@@ -14,7 +14,7 @@
 
 (define-symbol-macro optimizations
     ;;'(optimize (speed 3) (space 0) (safety 0) (debug 0) (compilation-speed 0)))
-    '(optimize (speed 0) (space 0) (safety 3) (debug 3) (compilation-speed 0)))
+    '(optimize (speed 3) (space 0) (safety 2) (debug 3) (compilation-speed 0)))
 
 
 (define-constant +request-buffer-size+ 4096
