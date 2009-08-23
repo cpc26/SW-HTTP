@@ -3,7 +3,20 @@
 (in-package #:sw-http)
 
 
-(defvar *connection* nil)
-(defvar *post-parameters* nil)
-(defvar *get-parameters* nil)
-(defvar *cookies* nil)
+(define-variable *post-parameters*
+    :kind :var
+    :value nil
+    :type list
+    :always-boundp t)
+
+(define-variable *get-parameters*
+    :kind :var
+    :value nil
+    :type list
+    :always-boundp t)
+
+(define-variable *cookies*
+    :kind :var
+    :value nil
+    :type list
+    :always-boundp t)

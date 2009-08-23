@@ -2,7 +2,7 @@
 
 (in-package #:sw-http)
 
-
+(eval-now
 (defstruct (connection (:conc-name :cn-) (:copier nil))
   (mutex (bt:make-lock) :type sb-thread:mutex)
 
@@ -18,6 +18,14 @@
   (response (make-response) :type response)
 
   (close-p nil :type (member t nil)))
+)
+
+
+(define-variable *connection*
+    :kind :var
+    :value nil
+    :type (or null connection)
+    :always-boundp t)
 
 
 (maybe-inline cn-outgoing-response-busy-p)
