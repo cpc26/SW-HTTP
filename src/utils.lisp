@@ -40,12 +40,10 @@ Returns NIL when code starts blocking."
       nil))
 
 
-;; TODO: Don't know about the connection type and it's associated (inline) functions.
-;; Is SBCL smart enough to recompile this later?
 (maybe-inline read-until-eagain)
 (defun read-until-eagain (buffer connection)
   (declare ((vector (unsigned-byte 8)) buffer)
-           (type connection connection)
+           (connection connection)
            #.optimizations)
   (let ((request-buffer (request-buffer-of (cn-server connection))))
     (declare ((simple-array (unsigned-byte 8) (#.+request-buffer-size+)) request-buffer))

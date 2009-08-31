@@ -244,12 +244,13 @@ The user should parse the result of the \"user-agent\" header himself then."
   (declare #.optimizations
            (connection connection))
   (let ((user-agent (the string (get-header "user-agent" connection))))
-    (or (when (search "KHTML" user-agent) :khtml)
-        (when (search "Gecko" user-agent) :gecko)
-        (when (search "MSIE" user-agent) :msie)
-        (when (or (search "Presto" user-agent)
-                  (search "Opera" user-agent)) :presto)
-        nil)))
+    (muffle-compiler-note
+      (or (when (search "KHTML" user-agent) :khtml)
+          (when (search "Gecko" user-agent) :gecko)
+          (when (search "MSIE" user-agent) :msie)
+          (when (or (search "Presto" user-agent)
+                    (search "Opera" user-agent)) :presto)
+          nil))))
 
 
 (declaim (inline close-connection-p))
