@@ -3,15 +3,6 @@
 (in-package #:sw-http)
 
 
-(defstruct (request (:conc-name :rq-) (:copier nil))
-  ;; Request line (or "initial line").
-  (method nil :type (member nil :get :post))
-  (url #.(coerce "" 'base-string) :type base-string)
-  (http-version nil :type (member nil :http-1.0 :http-1.1))
-  (header-fields nil :type list)
-  (message-body #.(coerce "" 'base-string) :type base-string))
-
-
 (maybe-inline request-parse-http-version)
 (defn request-parse-http-version ((member :http-1.0 :http-1.1) ((str base-string)))
   (declare  #.optimizations)

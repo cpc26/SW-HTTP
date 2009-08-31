@@ -21,6 +21,7 @@
     ((:file "package")
      (:file "config")
      (:file "specials")
+     (:file "bootstrap-types")
      (:file "utils")
      (:file "buffer")
      (:file "server")

@@ -3,16 +3,6 @@
 (in-package #:sw-http)
 
 
-(defstruct (incoming-request (:conc-name :irq-) (:copier nil))
-  (complete-request (make-request) :type request)
-
-  (buffer (make-array +request-buffer-size+ :element-type '(unsigned-byte 8) :fill-pointer 0)
-          :type (vector (unsigned-byte 8) #.+request-buffer-size+))
-
-  (last-pos-of-buffer 0 :type fixnum)
-  (status :handle-request-line-and-header-fields :type symbol))
-
-
 (maybe-inline incoming-request-reset)
 (defn incoming-request-reset (null ((incoming-request incoming-request)))
   (declare #.optimizations)

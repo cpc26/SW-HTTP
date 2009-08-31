@@ -3,36 +3,7 @@
 (in-package #:sw-http)
 
 
-(defclass server (event-base)
-  ((running-p :reader running-p-of
-              :type (member t nil)
-              :initform nil)
 
-   (default-mime-type :accessor default-mime-type-of
-                      :initarg :default-mime-type
-                      :initform "text/plain")
-
-   (port :reader port-of :initarg :port
-         :type fixnum
-         :initform (error ":PORT needed."))
-
-   (socket :reader socket-of)
-
-   (application-finder-fn :accessor application-finder-fn-of :initarg :application-finder-fn
-                          :initform  (progn
-                                       (warn ":APPLICATION-FINDER-FN not supplied; will always return DUMMY-APPLICATION.")
-                                       'dummy-application))
-   (connections :reader connections-of
-                :type hash-table
-                :initform (make-hash-table))
-
-   (request-buffer :reader request-buffer-of
-                   :type (simple-array (unsigned-byte 8) (#.+request-buffer-size+))
-                   :initform (make-array +request-buffer-size+ :element-type '(unsigned-byte 8)))
-
-   (thread :reader thread-of
-           :type sb-thread:thread)))
-(export '(server port-of socket-of application-finder-fn-of connections-of))
 
 
 (defmethod maybe-debug ((server server) condition)

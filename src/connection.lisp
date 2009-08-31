@@ -2,24 +2,6 @@
 
 (in-package #:sw-http)
 
-(eval-now
-(defstruct (connection (:conc-name :cn-) (:copier nil))
-  (mutex (bt:make-lock) :type sb-thread:mutex)
-
-  (socket (error ":SOCKET is needed.") :type iolib.sockets:socket)
-  (server (error ":SERVER is needed.") :type server)
-
-  (incoming-request (make-incoming-request) :type incoming-request)
-
-  (incoming-request-queue (mk-queue) :type queue)
-  (current-request nil :type (or null request))
-  (sending-p nil :type (member t nil))
-
-  (response (make-response) :type response)
-
-  (close-p nil :type (member t nil)))
-)
-
 
 (define-variable *connection*
     :value nil
