@@ -4,19 +4,13 @@
 
 
 (define-variable *post-parameters*
-    :kind :var
     :value nil
-    :type list
-    :always-boundp t)
+    :type list)
 
 (define-variable *get-parameters*
-    :kind :var
     :value nil
-    :type list
-    :always-boundp t)
+    :type list)
 
 (define-variable *cookies*
-    :kind :var
     :value nil
-    :type list
-    :always-boundp t)
+    :type list)

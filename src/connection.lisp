@@ -22,10 +22,8 @@
 
 
 (define-variable *connection*
-    :kind :var
     :value nil
-    :type (or null connection)
-    :always-boundp t)
+    :type (or null connection))
 
 
 (maybe-inline cn-outgoing-response-busy-p)
