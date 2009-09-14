@@ -1,7 +1,7 @@
 ;;;; http://nostdal.org/ ;;;;
 
 (defsystem sw-http
-  :description "AJAX/Comet message HTTP server."
+  :description "SW-HTTP - an EPOLL based server for Common Lisp"
   :long-description "Tusen på tusen av nydelige løpenoter og hvilenoter"
   :author "Lars Rune Nøstdal <larsnostdal@gmail.com>"
   :version "v0.1"

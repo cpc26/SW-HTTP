@@ -3,9 +3,6 @@
 (in-package #:sw-http)
 
 
-
-
-
 (defmethod maybe-debug ((server server) condition)
   (invoke-debugger condition))
 
