@@ -69,6 +69,8 @@ NOTE: This might modify the MESSAGE-BODY slot in REQUEST!"
 (maybe-inline request-path)
 (defn request-path (base-string ((request request)))
   (declare #.optimizations)
-  (let* ((url (rq-url request))
-         (query-string-position (or (position #\? url :test #'char=) (length url))))
-    (make-array query-string-position :element-type 'base-char :displaced-to url)))
+  (let ((url (rq-url request)))
+    (make-array (1- (or (position #\? url :test #'char=) (length url)))
+                :element-type 'base-char
+                :displaced-to url
+                :displaced-index-offset 1)))

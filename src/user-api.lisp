@@ -136,7 +136,7 @@ POST-PARAMETERS is the result of POST-PARAMETERS."
 (declaim (inline path))
 (defun path (&optional (connection *connection*))
   "The part of the URL after what is returned by (HOST) and before the ? character.
-\"http://domain.com/hello?id=1234\" would return \"/hello\"."
+\"http://domain.com/hello?id=1234\" would return \"hello\"."
   (declare #.optimizations
            (connection connection))
   (request-path (request connection)))
