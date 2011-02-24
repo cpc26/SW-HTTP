@@ -7,7 +7,6 @@
   (invoke-debugger condition))
 
 
-(maybe-inline server-find-application)
 (defun server-find-application (server connection)
   (declare (server server)
            (type connection connection)
@@ -15,7 +14,6 @@
   (funcall (the function (application-finder-fn-of server)) server connection))
 
 
-(maybe-inline server-add-connection)
 (defun server-add-connection (server connection)
   (declare (server server)
            (type connection connection)
@@ -25,7 +23,6 @@
         connection))
 
 
-(maybe-inline server-remove-connection)
 (defun server-remove-connection (server connection)
   (declare (server server)
            (type connection connection)
@@ -34,7 +31,6 @@
            (connections-of server)))
 
 
-(maybe-inline handle-socket-event)
 (defun handle-socket-event (server)
   (declare (server server)
            #.optimizations)

@@ -3,7 +3,6 @@
 (in-package #:sw-http)
 
 
-(maybe-inline request-parse-http-version)
 (defn request-parse-http-version ((member :http-1.0 :http-1.1) ((str base-string)))
   (declare  #.optimizations)
   (if (muffle-compiler-note
@@ -12,7 +11,6 @@
       :http-1.0))
 
 
-(maybe-inline request-parse-initial-line)
 (defn request-parse-initial-line (((line base-string) (request request)))
   "Parse LINE (\"initial line\") and destructively modify REQUEST."
   (declare #.optimizations)
@@ -29,7 +27,6 @@
     (values)))
 
 
-(maybe-inline request-parse-header-field)
 (defn request-parse-header-field (cons ((line base-string)))
   (declare #.optimizations)
   (let ((key_value (cl-ppcre:split ":\\s*" line :limit 2 :sharedp t)))
@@ -38,7 +35,6 @@
     key_value))
 
 
-(maybe-inline request-parse-header-fields)
 (defn request-parse-header-fields (((lines list) (request request)))
   "Parse LINES (HTTP request headers) and destructively modify REQUEST."
   (declare #.optimizations)
@@ -48,7 +44,6 @@
   (values))
 
 
-(maybe-inline request-parse-get-query)
 (defn request-parse-get-query (list ((request request)))
   "Returns the QUERY part of an URL like ?id=1&value=2 in this form:
 \((\"id\" \"1\") (\"value\" \"2\"))"
@@ -58,7 +53,6 @@
       (parse-query-str (subseq url (1+ query-string-position))))))
 
 
-(maybe-inline request-parse-post-query)
 (defn request-parse-post-query (list ((request request)))
   "Returns the MESSAGE-BODY of a REQUEST in the same form as REQUEST-GET-QUERY does.
 NOTE: This might modify the MESSAGE-BODY slot in REQUEST!"
@@ -66,7 +60,6 @@ NOTE: This might modify the MESSAGE-BODY slot in REQUEST!"
   (parse-query-str (rq-message-body request)))
 
 
-(maybe-inline request-path)
 (defn request-path (base-string ((request request)))
   (declare #.optimizations)
   (let ((url (rq-url request)))

@@ -8,7 +8,6 @@
     :type (or null connection))
 
 
-(maybe-inline cn-outgoing-response-busy-p)
 (defn cn-outgoing-response-busy-p (t ((connection connection)))
   "Anything currently writing or reading to/from OUTGOING-RESPONSE slot in CONNECTION?"
   (declare #.optimizations)
@@ -16,7 +15,6 @@
       (cn-current-request connection)))
 
 
-(maybe-inline connection-add-request-to-queue)
 (defun connection-add-request-to-queue (connection request)
   (declare (connection connection)
            (type request request)
@@ -24,7 +22,6 @@
   (queue-push (cn-incoming-request-queue connection) request))
 
 
-(maybe-inline connection-extract-next-request)
 (defun connection-extract-next-request (connection)
   (declare (connection connection)
            #.optimizations)
@@ -32,7 +29,6 @@
         (queue-pop (cn-incoming-request-queue connection))))
 
 
-(maybe-inline connection-handle-request-queue)
 (defun connection-handle-request-queue (connection)
   (declare (connection connection)
            #.optimizations)
@@ -45,7 +41,6 @@
       (bt:release-lock (cn-mutex connection))))
 
 
-(maybe-inline connection-done-generating-response)
 (defun connection-done-generating-response (connection)
   (declare (connection connection)
            #.optimizations)
@@ -57,7 +52,6 @@
         (warn "SW-HTTP, CONNECTION-DONE-GENERATING-RESPONSE: No longer connected."))))
 
 
-(maybe-inline connection-done-sending-response)
 (defun connection-done-sending-response (connection)
   (declare (connection connection)
            #.optimizations)
@@ -65,7 +59,6 @@
   (connection-handle-request-queue connection))
 
 
-(maybe-inline connection-done-reading-request)
 (defun connection-done-reading-request (connection request)
   (declare (connection connection)
            (type request request)
@@ -74,7 +67,6 @@
   (connection-handle-request-queue connection))
 
 
-(maybe-inline connection-start-sending)
 (defun connection-start-sending (connection)
   (declare (connection connection)
            #.optimizations)
@@ -85,7 +77,6 @@
                     (connection-handle connection (cn-server connection) event errorp))))
 
 
-(maybe-inline connection-stop-sending)
 (defun connection-stop-sending (connection)
   (declare (connection connection)
            #.optimizations)
@@ -103,7 +94,6 @@
                     (connection-handle connection (cn-server connection) event errorp))))
 
 
-(maybe-inline connection-destroy)
 (defun connection-destroy (connection)
   (declare (connection connection)
            #.optimizations)
@@ -112,7 +102,6 @@
   (server-remove-connection (cn-server connection) connection))
 
 
-(maybe-inline connection-handle)
 (defun connection-handle (connection server event errorp)
   "..or \"handle the connection\"."
   (declare (connection connection)

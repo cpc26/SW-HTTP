@@ -35,7 +35,6 @@
 (export 'mk-response-message-body)
 
 
-(maybe-inline response-handle)
 (defn response-handle ((member nil t) ((connection connection)))
   "..or \"handle the response\".
 Returns NIL if there is more to send."

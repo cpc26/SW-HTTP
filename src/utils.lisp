@@ -40,7 +40,6 @@ Returns NIL when code starts blocking."
       nil))
 
 
-(maybe-inline read-until-eagain)
 (defun read-until-eagain (buffer connection)
   (declare ((vector (unsigned-byte 8)) buffer)
            (connection connection)
@@ -64,7 +63,6 @@ Returns NIL when code starts blocking."
              (replace buffer request-buffer :start1 current-pos-of-buffer :end2 num-bytes-read)))))))
 
 
-(maybe-inline parse-query-str)
 (defun parse-query-str (query-str &optional (start 0))
   (declare (base-string query-str)
            (fixnum start)
@@ -79,7 +77,6 @@ Returns NIL when code starts blocking."
 
 
 ;; Dumb, simple and fast(?).
-(maybe-inline octets-to-simple-base-string)
 (defun octets-to-simple-base-string (octets &key (end (length octets)))
   "Returns a string of type SIMPLE-BASE-STRING."
   (declare ((vector (unsigned-byte 8)) octets)

@@ -3,7 +3,6 @@
 (in-package #:sw-http)
 
 
-(maybe-inline incoming-request-reset)
 (defn incoming-request-reset (null ((incoming-request incoming-request)))
   (declare #.optimizations)
   ;; We don't mess with the buffer here as it might contain data for the next request already.
@@ -12,7 +11,6 @@
   (values))
 
 
-(maybe-inline incoming-request-move-tail-of-buffer-to-beginning)
 (defn incoming-request-move-tail-of-buffer-to-beginning (null ((incoming-request incoming-request)
                                                                (tail-start fixnum) (tail-end fixnum)))
   "Move any \"tail data\" to beginning of buffer and set the
@@ -29,7 +27,6 @@ reading more data."
   (values))
 
 
-(maybe-inline incoming-request-read-until-blank-line)
 (defun incoming-request-read-until-blank-line (connection)
     "Returns NIL if there is more to read,
 or position of blank line if a +BLANK-LINE-OCTETS+ sequence has been found."
@@ -51,7 +48,6 @@ or position of blank line if a +BLANK-LINE-OCTETS+ sequence has been found."
                  (fill-pointer buffer))))))
 
 
-(maybe-inline incoming-request-handle-request-line-and-header-fields)
 (defun incoming-request-handle-line-and-header-fields (connection)
   "Returns NIL if there is more to read."
   (declare (connection connection)
@@ -78,7 +74,6 @@ or position of blank line if a +BLANK-LINE-OCTETS+ sequence has been found."
           complete-request)))))
 
 
-(maybe-inline incoming-request-prepare-to-read-message-body)
 (defun incoming-request-prepare-to-read-message-body (incoming-request)
   (declare (incoming-request incoming-request)
            #.optimizations)
@@ -98,7 +93,6 @@ or position of blank line if a +BLANK-LINE-OCTETS+ sequence has been found."
     (setf (irq-last-pos-of-buffer incoming-request) content-length)))
 
 
-(maybe-inline incoming-request-handle-request-message-body)
 (defun incoming-request-handle-message-body (connection)
   "Returns NIL if there is more to read."
   (declare (connection connection)
